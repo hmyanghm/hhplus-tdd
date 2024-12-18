@@ -1,5 +1,6 @@
 package io.hhplus.tdd.point;
 
+import io.hhplus.tdd.PointOperationException;
 import io.hhplus.tdd.database.PointHistoryTable;
 import io.hhplus.tdd.database.UserPointTable;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Mock Object When Then Test")
@@ -73,6 +75,22 @@ class PointServiceTest {
 
         // Then
         assertEquals(finalBalance, 70);
+    }
+
+    @Test
+    public void user포인트는_10000_이상_불가능() {
+
+        // Given
+        long id = 1;
+        long amount = 10000;
+        when(userPointTable.insertOrUpdate(id, amount)).thenThrow(new PointOperationException("포인트는 10000포인트 이상 적립 불가합니다."));
+
+        // When
+        // Then
+        PointOperationException e = assertThrows(PointOperationException.class, () ->
+            userPointTable.insertOrUpdate(id, amount).point());
+
+        assertEquals("포인트는 10000포인트 이상 적립 불가합니다.", e.getMessage());
     }
 
 }
