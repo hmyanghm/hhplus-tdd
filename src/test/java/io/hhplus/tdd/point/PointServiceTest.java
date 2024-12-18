@@ -43,4 +43,19 @@ class PointServiceTest {
         assertEquals(point, 0);
     }
 
+    @Test
+    public void user포인트_100_충전하면_100포인트() {
+
+        // Given
+        long id = 1;
+        long amount = 100;
+        when(userPointTable.insertOrUpdate(id, amount)).thenReturn(new UserPoint(id, amount, System.currentTimeMillis()));
+
+        // When
+        long balance = userPointTable.insertOrUpdate(id, amount).point();
+
+        // Then
+        assertEquals(balance, 100);
+    }
+
 }
