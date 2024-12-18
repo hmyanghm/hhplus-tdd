@@ -3,11 +3,18 @@ package io.hhplus.tdd.point;
 import io.hhplus.tdd.database.PointHistoryTable;
 import io.hhplus.tdd.database.UserPointTable;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
+@DisplayName("Mock Object When Then Test")
+@ExtendWith(MockitoExtension.class)
 class PointServiceTest {
 
     @Mock
@@ -22,6 +29,18 @@ class PointServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    // TODO. 단위 테스트 작성
+    @Test
+    public void 초기_조회시_user가_0포인트를_가진다() {
+
+        // Given
+        long id = 1;
+        when(userPointTable.selectById(id)).thenReturn(UserPoint.empty(id));
+
+        // When
+        long point = userPointTable.selectById(id).point();
+
+        // Then
+        assertEquals(point, 0);
+    }
 
 }
