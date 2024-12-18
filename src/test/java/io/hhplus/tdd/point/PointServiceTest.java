@@ -58,4 +58,21 @@ class PointServiceTest {
         assertEquals(balance, 100);
     }
 
+    @Test
+    public void user포인트_30_사용하면_70포인트() {
+
+        // Given
+        long id = 1;
+        long amount = 30;
+        long balance = 100;
+        UserPoint userPoint = new UserPoint(id, balance-amount, System.currentTimeMillis());
+        when(userPointTable.insertOrUpdate(id, balance-amount)).thenReturn(userPoint);
+
+        // When
+        long finalBalance = userPointTable.insertOrUpdate(id, balance-amount).point();
+
+        // Then
+        assertEquals(finalBalance, 70);
+    }
+
 }
